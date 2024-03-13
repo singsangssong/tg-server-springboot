@@ -1,5 +1,6 @@
 package JWTLogIn.JWT.user.service;
 
+import JWTLogIn.JWT.user.entity.Enum.Level;
 import JWTLogIn.JWT.user.security.JwtUtil;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +12,7 @@ public class AuthService {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public String extractLevel(String token) {
+    public Level extractLevel(String token) {
         return JwtUtil.getLevel(token, secretKey);
     }
 }

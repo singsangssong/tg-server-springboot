@@ -33,6 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if(authorization.isEmpty() || !authorization.startsWith("Bearer ")) {
             log.error("권한이 없음.");
+
             filterChain.doFilter(request, response);
             return;
         }

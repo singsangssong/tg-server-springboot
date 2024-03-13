@@ -1,5 +1,6 @@
 package JWTLogIn.JWT.user.security;
 
+import JWTLogIn.JWT.user.entity.Enum.Level;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,12 +20,12 @@ public class JwtUtil {
                 .getBody().get("name", String.class);
     } // userName 꺼내오기.
 
-    public static String getLevel(String token, String secretKey) {
+    public static Level getLevel(String token, String secretKey) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token)
-                .getBody().get("level", String.class);
+                .getBody().get("level", Level.class);
     } // level 꺼내오기
 
-    public static String createJwt(String name, String studentId, String level, String secretKey) {
+    public static String createJwt(String name, String studentId, Level level, String secretKey) {
         // name : token에 들어있는 것으로 사용함
         // secretKey : 서명
 

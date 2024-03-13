@@ -1,5 +1,6 @@
 package JWTLogIn.JWT.user.repository;
 
+import JWTLogIn.JWT.user.entity.Enum.Level;
 import JWTLogIn.JWT.user.entity.UserEntity;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -26,7 +27,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Query("UPDATE UserEntity u SET " +
             "u.level = :level " +
             "WHERE u.id = :id")
-    void changeLv (@Param("id") Long id, @Param("level") String level);
+    void changeLv (@Param("id") Long id, @Param("level") Level level);
 
 
 //    @Query("UPDATE BoardEntity b SET " +

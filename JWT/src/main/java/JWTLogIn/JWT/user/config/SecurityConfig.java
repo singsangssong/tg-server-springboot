@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity // SecurityFilterchain을 동작시키도록 함.
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -24,7 +24,7 @@ public class SecurityConfig {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Bean
+    @Bean // 요청이 들어오면 SecurityFilterChain이 가로채서 인증, 인가를 체크함.
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http
@@ -38,6 +38,7 @@ public class SecurityConfig {
                     // 그 외의 url에서는 token인증없이 접근 불가능.
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // jwt를 사용하기 때문에 session을 사용하지 않음.
                 .addFilterBefore(new JwtFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

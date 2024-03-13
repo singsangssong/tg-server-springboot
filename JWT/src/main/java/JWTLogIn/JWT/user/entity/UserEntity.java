@@ -1,22 +1,20 @@
 package JWTLogIn.JWT.user.entity;
 
 import JWTLogIn.JWT.user.dto.UserDTO;
+import JWTLogIn.JWT.user.entity.Enum.Level;
+import JWTLogIn.JWT.user.entity.Enum.Status;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
 @Builder
 @DynamicInsert
 @NoArgsConstructor @AllArgsConstructor
-@Table(name = "user_table")
-public class UserEntity {
+@Table(name = "user")
+public class UserEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 점직적 증가
     private Long id; // 기본 키.
@@ -27,21 +25,23 @@ public class UserEntity {
     @Column(nullable = false)
     private String password; // 비밀번호
 
+    @Column(nullable = false, unique = true, length = 25)
+    private String email;
+
     @Column(nullable = false)
     private String name; // 이름
 
     @Column(nullable = false)
-    private String status; // 재학/휴학 상태
+    private Status status; // 재학/휴학 상태
 
-    @Column(nullable = false, length = 3)
+    @Column(nullable = false, length = 9)
     private String semester; // 학년, 학기(3글자로 설정)
 
     @Column(nullable = false, unique = true, length = 13)
     private String phoneNumber; // 전화번호(13글자로 설정)
 
     @Column(length = 7)
-    @ColumnDefault("'Normal'")
-    private String level;
+    private Level level;
 
     // 연관매핑: 일대다
     // 참조 당하는 엔티티에서 사용
@@ -55,6 +55,7 @@ public class UserEntity {
                 .id(userEntity.getId())
                 .studentId(userEntity.getStudentId())
                 .password(userEntity.getPassword())
+                .email(userEntity.getEmail())
                 .name(userEntity.getName())
                 .status(userEntity.getStatus())
                 .semester(userEntity.getSemester())

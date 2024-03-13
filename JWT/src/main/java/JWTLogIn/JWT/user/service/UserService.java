@@ -2,13 +2,13 @@ package JWTLogIn.JWT.user.service;
 
 import JWTLogIn.JWT.user.dto.LogInDTO;
 import JWTLogIn.JWT.user.dto.UserDTO;
+import JWTLogIn.JWT.user.entity.Enum.Level;
 import JWTLogIn.JWT.user.entity.UserEntity;
 import JWTLogIn.JWT.user.repository.UserRepository;
 import JWTLogIn.JWT.user.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -30,9 +30,12 @@ public class UserService {
         if(studentId.isPresent())
             throw new Exception("This studentId already exist.");
 
+        userDTO.setLevel(Level.MANAGER);
+
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         UserEntity userEntity = UserDTO.toUserEntity(userDTO);
         userEntity.hashPassword(bCryptPasswordEncoder); // 유저 비밀번호 암호화 과정
+
 
         userRepository.save(userEntity); // 그대로 저장함
     } // 회원 정보 저장
@@ -99,7 +102,7 @@ public class UserService {
     }
 
 
-    public void changeLevel(Long id, String level) {
+    public void changeLevel(Long id, Level level) {
         Optional<UserEntity> user = userRepository.findById(id);
         if(user.isPresent()) {
             userRepository.changeLv(user.get().getId(), level);

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "post_table")
+@Table(name = "post")
 public class PostEntity {
 
     @Id
